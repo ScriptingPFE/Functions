@@ -19,15 +19,16 @@ Function Get-O365UrlAvailability {
     )
     <#
     .SYNOPSIS
-        NAME: TestO365URLs
-        AUTHOR: Eric Powers 
-        VERSION: 1.0
+        NAME: Get-O365UrlAvailability
+        AUTHOR: Eric Powers ericpow@microsoft.com
+        VERSION: 2.1
 
     .FUNCTIONALITY
          
 
     .DESCRIPTION
-        Attempts to make connections with each of the IPs for the O365 DOD endpoints. Requires the file from O365 DOD Endpoints Json
+        Attempts to make connections with each of the IPs for the O365 endpoints based on the selection provided in the O365TentantNetwork parameter. 
+        Requires the file from O365 Endpoints Json which is downloaded for the endpoint you select automatically
         
         To download this file programatically you can use the lines below
         $webclient = [System.Net.WebClient]::new()
@@ -35,10 +36,13 @@ Function Get-O365UrlAvailability {
 
 
     .EXAMPLE
-        .\TestO365Connections.ps1
+        Get-O365UrlAvailability.ps1 -O365TentantNetwork Commercial -EmailAddress ericpow@microsoft.com
 
     .NOTES
         20210107: v1.0 - Initial Release
+        20210407: v2.0 - Updated to validate url endpoints only
+        0210407: v2.1 - Updated to validate url endpoints only use emailaddress as well as O365TentantNetwork to select the proper endpoint for public consumption
+        
 #>
 Function Get-NetworkConnectionAvailablitiy {
     Param($Computername,
