@@ -155,9 +155,10 @@ Function Get-NetworkConnectionAvailablitiy {
                             testedPort= $port
                             requiredURL = $url 
                             testedURL = $testedurl
-                            success = $true 
+                            success = $false 
                             testDuration = $null
-                            }    
+                            }
+                                
                         $connectionResult = Get-NetworkConnectionAvailablitiy -Computername $testedurl  -Port $port -WarningAction SilentlyContinue 
                         $reportfinding.testDuration = $connectionResult.testDuration
     
@@ -175,7 +176,7 @@ Function Get-NetworkConnectionAvailablitiy {
                             write-host -ForegroundColor Red "Url: " -NoNewline; Write-Host $TestedUrl -NoNewline;write-host -ForegroundColor Red " TCPPort: " -nonewline; write-host $port -nonewline; write-host -ForegroundColor Red " is NOT available. Test duration (Seconds): " -NoNewline;Write-Host $duration
                         }
                         else{
-                            
+                            $reportfinding.success = $true
                             write-host -ForegroundColor green "Url: " -NoNewline; Write-Host $TestedUrl -NoNewline;write-host -ForegroundColor green " TCPPort: " -nonewline; write-host $port -nonewline; write-host -ForegroundColor green " is available. Test duration (Seconds): " -NoNewline;Write-Host $duration
                         }
                     }
