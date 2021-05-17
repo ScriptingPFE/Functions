@@ -44,7 +44,13 @@ Function Get-O365UrlAvailability {
         0210407: v2.1 - Updated to validate url endpoints only use emailaddress as well as O365TentantNetwork to select the proper endpoint for public consumption
         
 #>
-Function Get-NetworkConnectionAvailablitiy {
+
+
+    Write-host -ForegroundColor Yellow "NOTICE: Wild card URLs are tested without the wildcard as a root url." 
+    Write-host -ForegroundColor Yellow "For example: '*.keydelivery.mediaservices.windows.net' would be tested as 'keydelivery.mediaservices.windows.net'" 
+    Write-host -ForegroundColor Yellow "The reporting file lists the URLs in O365 Network Requirements file as 'requiredURL'. The URL that is checked is reported as the 'TestedURL'"
+
+    Function Get-NetworkConnectionAvailablitiy {
     Param($Computername,
     $Port
     )
@@ -94,7 +100,6 @@ Function Get-NetworkConnectionAvailablitiy {
         new-item $env:USERPROFILE\Desktop\O365Networks -ItemType Directory  | Out-Null
     }
     
-    $EmailDomain 
     $webclient = [System.Net.WebClient]::new()
     switch ($O365TentantNetwork) {
         "USDOD" {  
@@ -141,7 +146,6 @@ Function Get-NetworkConnectionAvailablitiy {
                         $testedurl = $url 
                     }                    
                     
-                    $isAvailable = $True                    
                     foreach ($port in ($JsonEntry.tcpPorts -split ',')){
                         $reportfinding = [pscustomobject]@{
                             id = $JsonEntry.id
@@ -179,13 +183,12 @@ Function Get-NetworkConnectionAvailablitiy {
                             $reportfinding.success = $true
                             write-host -ForegroundColor green "Url: " -NoNewline; Write-Host $TestedUrl -NoNewline;write-host -ForegroundColor green " TCPPort: " -nonewline; write-host $port -nonewline; write-host -ForegroundColor green " is available. Test duration (Seconds): " -NoNewline;Write-Host $duration
                         }
+                    
+                        $reportfinding 
+                    
                     }
                     
-                    $reportfinding 
-                    if($isAvailable){
-                        $reportfinding.Success = $true
-                    }
-    
+                        
                     Start-Sleep -Milliseconds 150
     
                 }
